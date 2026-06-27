@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MovieVerse | Movie Recommendation App</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <div class="logo">
+
+            <h1>🎬 MovieVerse</h1>
+
+        </div>
+
+        <div class="search-container">
+
+            <input
+                type="text"
+                id="search-input"
+                placeholder="Search Movies..."
+            >
+
+            <button id="search-btn">
+
+                Search
+
+            </button>
+
+        </div>
+
+    </header>
+
+    <!-- ================= HERO SECTION ================= -->
+
+    <section class="hero">
+
+        <div class="hero-overlay">
+
+            <div class="hero-content">
+
+                <h1>
+
+                    Discover Millions of Movies
+
+                </h1>
+
+                <p>
+
+                    Search, Explore and Save Your Favorite Movies.
+
+                </p>
+
+                <button id="explore-btn">
+
+                    Explore Now
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= FILTERS ================= -->
+
+    <section class="filters">
+
+        <select id="genre-filter">
+
+            <option value="">Genre</option>
+
+        </select>
+
+        <select id="year-filter">
+
+            <option value="">Year</option>
+
+        </select>
+
+        <select id="rating-filter">
+
+            <option value="">Minimum Rating</option>
+
+            <option value="9">9+</option>
+
+            <option value="8">8+</option>
+
+            <option value="7">7+</option>
+
+            <option value="6">6+</option>
+
+            <option value="5">5+</option>
+
+        </select>
+
+        <select id="language-filter">
+
+            <option value="">Language</option>
+
+        </select>
+
+        <select id="sort-filter">
+
+            <option value="">Sort By</option>
+
+            <option value="popularity.desc">Popularity ↓</option>
+
+            <option value="popularity.asc">Popularity ↑</option>
+
+            <option value="vote_average.desc">Highest Rated</option>
+
+            <option value="vote_average.asc">Lowest Rated</option>
+
+            <option value="primary_release_date.desc">Newest</option>
+
+            <option value="primary_release_date.asc">Oldest</option>
+
+        </select>
+
+        <button id="reset-btn">
+
+            Reset
+
+        </button>
+
+    </section>
+
+    <!-- ================= CATEGORIES ================= -->
+
+    <section class="categories">
+
+        <button class="category-btn active" id="trending-btn">
+
+            🔥 Trending
+
+        </button>
+
+        <button class="category-btn" id="popular-btn">
+
+            🎬 Popular
+
+        </button>
+
+        <button class="category-btn" id="toprated-btn">
+
+            ⭐ Top Rated
+
+        </button>
+
+        <button class="category-btn" id="upcoming-btn">
+
+            📅 Upcoming
+
+        </button>
+
+        <button class="category-btn" id="nowplaying-btn">
+
+            🍿 Now Playing
+
+        </button>
+
+    </section>
+
+    <!-- ================= MAIN ================= -->
+
+    <main>
+
+        <section class="movies-section">
+
+            <h2 id="section-title">
+
+                Trending Movies
+
+            </h2>
+
+            <div id="movie-container">
+
+                <!-- Movie Cards -->
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ================= LOADING ================= -->
+
+    <div id="loader" class="loader">
+
+        <div class="spinner"></div>
+
+        <p>Loading Movies...</p>
+
+    </div>
+
+    <!-- ================= MODAL ================= -->
+
+    <div id="movie-modal" class="modal">
+
+        <div class="modal-content">
+
+            <span id="close-modal">
+
+                &times;
+
+            </span>
+
+            <div id="modal-body">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+
+            © 2026 MovieVerse | Built with HTML, CSS, JavaScript & TMDB API
+
+        </p>
+
+    </footer>
+
+    <!-- ================= JAVASCRIPT ================= -->
+     <!-- Movie Details Modal -->
+    <div id="movie-modal" class="modal">
+
+        <div class="modal-content">
+
+            <div id="modal-body"></div>
+
+        </div>
+
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+
+</html>
