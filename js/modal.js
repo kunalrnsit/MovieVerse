@@ -105,6 +105,7 @@ export async function showMovieDetails(movieId) {
 
                 <h3>⭐ User Reviews</h3>
 
+                
                 ${reviewsHTML}
 
                 <br><br>

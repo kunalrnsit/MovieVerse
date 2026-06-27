@@ -10,6 +10,12 @@ import {
 
 import { showMovieDetails } from "./modal.js";
 
+import {
+    addToFavorites,
+    removeFromFavorites,
+    isFavorite
+} from "./favorites.js";
+
 const movieContainer = document.getElementById("movie-container");
 const sectionTitle = document.getElementById("section-title");
 
@@ -94,18 +100,12 @@ export function displayMovies(movies) {
     movieContainer.innerHTML = "";
 
     if (!movies || movies.length === 0) {
-
-        movieContainer.innerHTML =
-            "<h2>No Movies Found</h2>";
-
+        movieContainer.innerHTML = "<h2>No Movies Found</h2>";
         return;
-
     }
 
     movies.forEach(movie => {
-
         createMovieCard(movie);
-
     });
 
 }
@@ -117,7 +117,6 @@ export function displayMovies(movies) {
 function createMovieCard(movie) {
 
     const card = document.createElement("div");
-
     card.className = "movie-card";
 
     const poster = movie.poster_path
@@ -136,9 +135,17 @@ function createMovieCard(movie) {
         ? movie.overview.substring(0, 100) + "..."
         : "No overview available.";
 
+    const heartIcon = isFavorite(movie.id) ? "❤️" : "🤍";
+
     card.innerHTML = `
     
-        <img src="${poster}" alt="${movie.title}">
+        <div class="movie-poster-wrapper">
+            <img src="${poster}" alt="${movie.title}">
+            
+            <button class="fav-btn">
+                ${heartIcon}
+            </button>
+        </div>
 
         <div class="movie-info">
 
@@ -158,11 +165,38 @@ function createMovieCard(movie) {
 
     `;
 
-    // View Details Button
+    // =========================
+    // View Details
+    // =========================
 
-    card.querySelector(".details-btn").addEventListener("click", () => {
+    card.querySelector(".details-btn")
+        .addEventListener("click", () => {
+            showMovieDetails(movie.id);
+        });
 
-        showMovieDetails(movie.id);
+    // =========================
+    // Favorite Button
+    // =========================
+
+    const favBtn = card.querySelector(".fav-btn");
+
+    favBtn.addEventListener("click", () => {
+
+        const movieData = {
+            id: movie.id,
+            title: movie.title,
+            poster_path: movie.poster_path,
+            vote_average: movie.vote_average,
+            release_date: movie.release_date
+        };
+
+        if (isFavorite(movie.id)) {
+            removeFromFavorites(movie.id);
+            favBtn.textContent = "🤍";
+        } else {
+            addToFavorites(movieData);
+            favBtn.textContent = "❤️";
+        }
 
     });
 
@@ -182,51 +216,31 @@ export function setupCategories() {
     const upcomingBtn = document.getElementById("upcoming-btn");
 
     if (trendingBtn) {
-
         trendingBtn.addEventListener("click", () => {
-
             activateButton(trendingBtn);
-
             loadTrendingMovies();
-
         });
-
     }
 
     if (popularBtn) {
-
         popularBtn.addEventListener("click", () => {
-
             activateButton(popularBtn);
-
             loadPopularMovies();
-
         });
-
     }
 
     if (topRatedBtn) {
-
         topRatedBtn.addEventListener("click", () => {
-
             activateButton(topRatedBtn);
-
             loadTopRatedMovies();
-
         });
-
     }
 
     if (upcomingBtn) {
-
         upcomingBtn.addEventListener("click", () => {
-
             activateButton(upcomingBtn);
-
             loadUpcomingMovies();
-
         });
-
     }
 
 }
@@ -238,9 +252,7 @@ export function setupCategories() {
 function activateButton(activeBtn) {
 
     document.querySelectorAll(".category-btn").forEach(btn => {
-
         btn.classList.remove("active");
-
     });
 
     activeBtn.classList.add("active");
