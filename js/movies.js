@@ -258,3 +258,16 @@ function activateButton(activeBtn) {
     activeBtn.classList.add("active");
 
 }
+export function loadFavoritesMovies() {
+
+    sectionTitle.textContent = "❤️ Your Favorites";
+
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+    if (favorites.length === 0) {
+        movieContainer.innerHTML = "<h2>No Favorites Added ❤️</h2>";
+        return;
+    }
+
+    displayMovies(favorites);
+}
