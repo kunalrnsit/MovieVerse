@@ -1309,3 +1309,33 @@ color:#bbb;
     opacity: 1;
     transform: translateY(0);
 }
+.similar-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    padding: 10px 0;
+}
+
+.similar-card {
+    min-width: 120px;
+    cursor: pointer;
+    flex-shrink: 0;
+    text-align: center;
+}
+
+.similar-card img {
+    width: 120px;
+    height: 180px;
+    border-radius: 8px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.similar-card img:hover {
+    transform: scale(1.05);
+}
+
+.similar-card p {
+    font-size: 12px;
+    margin-top: 5px;
+}

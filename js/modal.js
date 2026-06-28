@@ -1,5 +1,5 @@
 // =========================================
-// modal.js (IMPROVED VERSION)
+// modal.js (UPDATED - WITH SIMILAR MOVIES)
 // =========================================
 
 import {
@@ -18,6 +18,8 @@ import {
     isFavorite
 } from "./favorites.js";
 
+import { getSimilarMovies } from "./similar.js";
+
 // =========================================
 // SHOW MOVIE DETAILS
 // =========================================
@@ -27,13 +29,12 @@ export async function showMovieDetails(movieId) {
     const modal = document.getElementById("movie-modal");
     const modalBody = document.getElementById("modal-body");
 
-    // =====================================
-    // LOADING STATE (IMPORTANT FIX)
-    // =====================================
+    // =========================
+    // LOADING STATE
+    // =========================
     modalBody.innerHTML = `
         <div class="modal-loading">
-            <div class="skeleton skeleton-poster"></div>
-            <div class="skeleton-lines"></div>
+            <p>Loading...</p>
         </div>
     `;
 
@@ -41,9 +42,9 @@ export async function showMovieDetails(movieId) {
 
     try {
 
-        // =====================================
-        // FETCH MAIN MOVIE DETAILS
-        // =====================================
+        // =========================
+        // MAIN MOVIE DATA
+        // =========================
         const data = await fetchData(
             `/movie/${movieId}?api_key=${API_KEY}`
         );
@@ -53,12 +54,13 @@ export async function showMovieDetails(movieId) {
             return;
         }
 
-        // =====================================
-        // FETCH EXTRA DATA (PARALLEL SAFE STYLE)
-        // =====================================
+        // =========================
+        // PARALLEL DATA FETCH
+        // =========================
         const trailerURL = await getTrailer(movieId);
         const cast = await getCast(movieId);
         const reviews = await getReviews(movieId);
+        const similarMovies = await getSimilarMovies(movieId);
 
         const castHTML = createCastHTML(cast);
         const reviewsHTML = createReviewsHTML(reviews);
@@ -69,9 +71,14 @@ export async function showMovieDetails(movieId) {
 
         const heartIcon = isFavorite(movieId) ? "❤️" : "🤍";
 
-        // =====================================
-        // RENDER MODAL UI
-        // =====================================
+        // =========================
+        // SIMILAR MOVIES HTML
+        // =========================
+        const similarHTML = createSimilarHTML(similarMovies);
+
+        // =========================
+        // RENDER MODAL
+        // =========================
         modalBody.innerHTML = `
             <div class="modal-container">
 
@@ -99,7 +106,7 @@ export async function showMovieDetails(movieId) {
                         data.genres?.map(g => g.name).join(", ") || "N/A"
                     }</p>
 
-                    <p>${data.overview || "No description available."}</p>
+                    <p>${data.overview || "No overview available."}</p>
 
                     <button class="fav-detail-btn">
                         ${heartIcon} ${isFavorite(movieId) ? "Remove from Favorites" : "Add to Favorites"}
@@ -133,29 +140,31 @@ export async function showMovieDetails(movieId) {
                     <h3>⭐ Reviews</h3>
                     ${reviewsHTML || "<p>No reviews available</p>"}
 
+                    <hr>
+
+                    <h3>🎯 Recommended for you</h3>
+                    ${similarHTML}
+
                 </div>
             </div>
         `;
 
-        // =====================================
-        // CLOSE BUTTON
-        // =====================================
+        // =========================
+        // CLOSE MODAL
+        // =========================
         const closeBtn = modal.querySelector(".close-btn");
 
         closeBtn.addEventListener("click", closeModal);
 
-        // =====================================
-        // CLICK OUTSIDE CLOSE
-        // =====================================
         modal.onclick = (e) => {
             if (e.target === modal) {
                 closeModal();
             }
         };
 
-        // =====================================
+        // =========================
         // FAVORITES BUTTON
-        // =====================================
+        // =========================
         const favBtn = modal.querySelector(".fav-detail-btn");
 
         favBtn.addEventListener("click", () => {
@@ -178,23 +187,65 @@ export async function showMovieDetails(movieId) {
 
         });
 
-    } catch (error) {
+        // =========================
+        // CLICK ON SIMILAR MOVIES
+        // =========================
+        modal.querySelectorAll(".similar-card").forEach(card => {
 
+            card.addEventListener("click", () => {
+
+                const id = card.dataset.id;
+                showMovieDetails(id);
+
+            });
+
+        });
+
+    } catch (error) {
         console.error("Modal Error:", error);
 
         modalBody.innerHTML = `
-            <p style="color:red;">
-                Failed to load movie details ❌
-            </p>
+            <p style="color:red;">Failed to load movie details</p>
         `;
     }
 }
 
 // =========================================
-// CLOSE MODAL FUNCTION (CLEAN FIX)
+// CLOSE MODAL FUNCTION
 // =========================================
 
 function closeModal() {
     const modal = document.getElementById("movie-modal");
     modal.style.display = "none";
+}
+
+// =========================================
+// CREATE SIMILAR MOVIES HTML
+// =========================================
+
+function createSimilarHTML(movies) {
+
+    if (!movies || movies.length === 0) {
+        return "<p>No recommendations available</p>";
+    }
+
+    return `
+        <div class="similar-container">
+
+            ${movies.map(movie => {
+
+                const poster = movie.poster_path
+                    ? `${IMAGE_BASE_URL}${movie.poster_path}`
+                    : "https://via.placeholder.com/200x300?text=No+Image";
+
+                return `
+                    <div class="similar-card" data-id="${movie.id}">
+                        <img src="${poster}" alt="${movie.title}">
+                        <p>${movie.title}</p>
+                    </div>
+                `;
+            }).join("")}
+
+        </div>
+    `;
 }
