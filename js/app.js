@@ -1,8 +1,11 @@
-import { loadTrendingMovies, setupCategories } from "./movies.js";
+import {
+    loadTrendingMovies,
+    setupCategories,
+    loadFavoritesMovies
+} from "./movies.js";
+
 import { setupSearch } from "./search.js";
 import { setupFilters } from "./filters.js";
-import { loadFavoritesMovies } from "./movies.js";
-
 document.addEventListener("DOMContentLoaded", () => {
 
     loadTrendingMovies();
@@ -24,5 +27,57 @@ document.addEventListener("DOMContentLoaded", () => {
 
         });
     }
+
+    // ===============================
+    // 🌙 DARK MODE STARTS HERE
+    // ===============================
+
+    const themeToggle = document.getElementById("theme-toggle");
+
+    const savedTheme = localStorage.getItem("theme") || "light";
+
+    if (savedTheme === "dark") {
+        document.body.classList.add("dark");
+    }
+
+    updateThemeButton();
+
+    if (themeToggle) {
+
+        themeToggle.addEventListener("click", () => {
+
+            document.body.classList.toggle("dark");
+
+            const theme = document.body.classList.contains("dark")
+                ? "dark"
+                : "light";
+
+            localStorage.setItem("theme", theme);
+
+            updateThemeButton();
+
+        });
+
+    }
+
+    function updateThemeButton() {
+
+        if (!themeToggle) return;
+
+        if (document.body.classList.contains("dark")) {
+
+            themeToggle.textContent = "☀️ Light Mode";
+
+        } else {
+
+            themeToggle.textContent = "🌙 Dark Mode";
+
+        }
+
+    }
+
+    // ===============================
+    // 🌙 DARK MODE ENDS HERE
+    // ===============================
 
 });

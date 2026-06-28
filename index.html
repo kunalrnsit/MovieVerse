@@ -27,9 +27,7 @@
     <header>
 
         <div class="logo">
-
             <h1>🎬 MovieVerse</h1>
-
         </div>
 
         <div class="search-container">
@@ -41,9 +39,12 @@
             >
 
             <button id="search-btn">
-
                 Search
+            </button>
 
+            <!-- Dark Mode -->
+            <button id="theme-toggle" class="theme-btn">
+                🌙 Dark Mode
             </button>
 
         </div>
@@ -58,22 +59,14 @@
 
             <div class="hero-content">
 
-                <h1>
-
-                    Discover Millions of Movies
-
-                </h1>
+                <h1>Discover Millions of Movies</h1>
 
                 <p>
-
                     Search, Explore and Save Your Favorite Movies.
-
                 </p>
 
                 <button id="explore-btn">
-
                     Explore Now
-
                 </button>
 
             </div>
@@ -87,37 +80,26 @@
     <section class="filters">
 
         <select id="genre-filter">
-
             <option value="">Genre</option>
-
         </select>
 
         <select id="year-filter">
-
             <option value="">Year</option>
-
         </select>
 
         <select id="rating-filter">
 
             <option value="">Minimum Rating</option>
-
             <option value="9">9+</option>
-
             <option value="8">8+</option>
-
             <option value="7">7+</option>
-
             <option value="6">6+</option>
-
             <option value="5">5+</option>
 
         </select>
 
         <select id="language-filter">
-
             <option value="">Language</option>
-
         </select>
 
         <select id="sort-filter">
@@ -139,9 +121,7 @@
         </select>
 
         <button id="reset-btn">
-
             Reset
-
         </button>
 
     </section>
@@ -151,35 +131,26 @@
     <section class="categories">
 
         <button class="category-btn active" id="trending-btn">
-
             🔥 Trending
-
         </button>
 
         <button class="category-btn" id="popular-btn">
-
             🎬 Popular
-
         </button>
 
         <button class="category-btn" id="toprated-btn">
-
             ⭐ Top Rated
-
         </button>
 
         <button class="category-btn" id="upcoming-btn">
-
             📅 Upcoming
-
         </button>
 
         <button class="category-btn" id="nowplaying-btn">
-
             🍿 Now Playing
-
         </button>
-        <button id="favorites-btn" class="category-btn">
+
+        <button class="category-btn" id="favorites-btn">
             ❤️ Favorites
         </button>
 
@@ -192,22 +163,18 @@
         <section class="movies-section">
 
             <h2 id="section-title">
-
-                Trending Movies
-
+                🔥 Trending Movies
             </h2>
 
             <div id="movie-container">
-
                 <!-- Movie Cards -->
-
             </div>
 
         </section>
 
     </main>
 
-    <!-- ================= LOADING ================= -->
+    <!-- ================= LOADER ================= -->
 
     <div id="loader" class="loader">
 
@@ -223,15 +190,7 @@
 
         <div class="modal-content">
 
-            <span id="close-modal">
-
-                &times;
-
-            </span>
-
-            <div id="modal-body">
-
-            </div>
+            <div id="modal-body"></div>
 
         </div>
 
@@ -242,26 +201,15 @@
     <footer>
 
         <p>
-
             © 2026 MovieVerse | Built with HTML, CSS, JavaScript & TMDB API
-
         </p>
 
     </footer>
 
     <!-- ================= JAVASCRIPT ================= -->
-     <!-- Movie Details Modal -->
-    <div id="movie-modal" class="modal">
-
-        <div class="modal-content">
-
-            <div id="modal-body"></div>
-
-        </div>
-
-    </div>
 
     <script type="module" src="js/app.js"></script>
+
 </body>
 
 </html>

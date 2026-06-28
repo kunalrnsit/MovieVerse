@@ -1339,3 +1339,125 @@ color:#bbb;
     font-size: 12px;
     margin-top: 5px;
 }
+.theme-btn{
+
+    margin-left:10px;
+
+    padding:10px 15px;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:0.3s;
+
+}
+
+.theme-btn:hover{
+
+    transform:scale(1.05);
+
+}
+/* Smooth transition */
+
+body{
+
+    transition:background .3s,color .3s;
+
+}
+
+/* Light Mode */
+
+body{
+
+    background:#ffffff;
+
+    color:#222;
+
+}
+
+/* Dark Mode */
+
+body.dark{
+
+    background:#121212;
+
+    color:white;
+
+}
+
+/* Header */
+
+body.dark header{
+
+    background:#1c1c1c;
+
+}
+
+/* Hero */
+
+body.dark .hero{
+
+    filter:brightness(.9);
+
+}
+
+/* Filters */
+
+body.dark .filters{
+
+    background:#1b1b1b;
+
+}
+
+/* Dropdown */
+
+body.dark select{
+
+    background:#2a2a2a;
+
+    color:white;
+
+}
+
+/* Movie Cards */
+
+body.dark .movie-card{
+
+    background:#1e1e1e;
+
+    color:white;
+
+}
+
+/* Modal */
+
+body.dark .modal-content{
+
+    background:#1c1c1c;
+
+    color:white;
+
+}
+
+/* Footer */
+
+body.dark footer{
+
+    background:#111;
+
+}
+
+/* Buttons */
+
+body.dark button{
+
+    background:#2f2f2f;
+
+    color:white;
+
+}
