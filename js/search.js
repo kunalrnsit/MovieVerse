@@ -1,9 +1,13 @@
 // ============================================
-// search.js
+// search.js (IMPROVED VERSION)
 // ============================================
 
 import { API_KEY, fetchData } from "./api.js";
 import { displayMovies } from "./movies.js";
+
+// ============================================
+// Setup Search
+// ============================================
 
 export function setupSearch() {
 
@@ -11,78 +15,94 @@ export function setupSearch() {
     const searchInput = document.getElementById("search-input");
 
     if (!searchBtn || !searchInput) {
-
         console.error("Search elements not found.");
         return;
-
     }
 
-    // Search when button is clicked
+    // Button click search
     searchBtn.addEventListener("click", searchMovies);
 
-    // Search when Enter key is pressed
+    // Enter key search
     searchInput.addEventListener("keydown", (event) => {
-
         if (event.key === "Enter") {
-
             event.preventDefault();
             searchMovies();
-
         }
-
     });
-
 }
+
+// ============================================
+// MAIN SEARCH FUNCTION (IMPROVED)
+// ============================================
 
 async function searchMovies() {
 
     const searchInput = document.getElementById("search-input");
+    const movieContainer = document.getElementById("movie-container");
+    const sectionTitle = document.getElementById("section-title");
 
     const query = searchInput.value.trim();
 
+    // ----------------------------------------
+    // Validate input
+    // ----------------------------------------
     if (query === "") {
-
         alert("Please enter a movie name.");
         return;
-
     }
 
     try {
 
+        // ========================================
+        // Show loading state (IMPORTANT FIX)
+        // ========================================
+        movieContainer.innerHTML = `
+            <div class="movie-card skeleton"></div>
+            <div class="movie-card skeleton"></div>
+            <div class="movie-card skeleton"></div>
+            <div class="movie-card skeleton"></div>
+        `;
+
+        sectionTitle.textContent = "🔍 Searching...";
+
+        // ========================================
+        // Fetch search results
+        // ========================================
         const data = await fetchData(
             `/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`
         );
 
-        if (!data || !data.results) {
-
-            alert("Unable to fetch movies.");
+        // ----------------------------------------
+        // Handle API failure
+        // ----------------------------------------
+        if (!data || data.error) {
+            movieContainer.innerHTML = "<h2>⚠️ Error fetching movies</h2>";
+            sectionTitle.textContent = "Error";
             return;
-
         }
 
+        // ----------------------------------------
+        // Handle no results
+        // ----------------------------------------
         if (data.results.length === 0) {
 
-            document.getElementById("movie-container").innerHTML =
-                "<h2>No movies found.</h2>";
-
-            document.getElementById("section-title").textContent =
-                "No Results";
-
+            movieContainer.innerHTML = "<h2>No movies found 😔</h2>";
+            sectionTitle.textContent = "No Results";
             return;
-
         }
 
+        // ========================================
+        // Render results
+        // ========================================
         displayMovies(data.results);
 
-        document.getElementById("section-title").textContent =
-            `🔍 Search Results for "${query}"`;
+        sectionTitle.textContent = `🔍 Search Results for "${query}"`;
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error("Search Error:", error);
 
+        movieContainer.innerHTML = "<h2>Something went wrong ❌</h2>";
+        sectionTitle.textContent = "Error";
     }
-
 }

@@ -1,5 +1,5 @@
 // ============================================
-// movies.js
+// movies.js (UPDATED VERSION)
 // ============================================
 
 import {
@@ -20,6 +20,34 @@ const movieContainer = document.getElementById("movie-container");
 const sectionTitle = document.getElementById("section-title");
 
 // ============================================
+// LOADING STATE
+// ============================================
+
+let isLoading = false;
+
+// ============================================
+// SKELETON UI
+// ============================================
+
+function renderSkeletons() {
+    return Array(12)
+        .fill()
+        .map(() => `
+            <div class="movie-card skeleton"></div>
+        `)
+        .join("");
+}
+
+function showLoader() {
+    isLoading = true;
+    movieContainer.innerHTML = renderSkeletons();
+}
+
+function hideLoader() {
+    isLoading = false;
+}
+
+// ============================================
 // Load Trending Movies
 // ============================================
 
@@ -27,14 +55,23 @@ export async function loadTrendingMovies() {
 
     sectionTitle.textContent = "🔥 Trending Movies";
 
-    const data = await fetchData(
-        `/trending/movie/day?api_key=${API_KEY}`
-    );
+    try {
+        showLoader();
 
-    if (data && data.results) {
-        displayMovies(data.results);
+        const data = await fetchData(
+            `/trending/movie/day?api_key=${API_KEY}`
+        );
+
+        hideLoader();
+
+        if (data && data.results) {
+            displayMovies(data.results);
+        }
+
+    } catch (error) {
+        console.error("Error loading trending movies:", error);
+        movieContainer.innerHTML = "<h2>Error loading movies</h2>";
     }
-
 }
 
 // ============================================
@@ -45,14 +82,22 @@ export async function loadPopularMovies() {
 
     sectionTitle.textContent = "🎬 Popular Movies";
 
-    const data = await fetchData(
-        `/movie/popular?api_key=${API_KEY}`
-    );
+    try {
+        showLoader();
 
-    if (data && data.results) {
-        displayMovies(data.results);
+        const data = await fetchData(
+            `/movie/popular?api_key=${API_KEY}`
+        );
+
+        hideLoader();
+
+        if (data && data.results) {
+            displayMovies(data.results);
+        }
+
+    } catch (error) {
+        console.error("Error loading popular movies:", error);
     }
-
 }
 
 // ============================================
@@ -63,14 +108,22 @@ export async function loadTopRatedMovies() {
 
     sectionTitle.textContent = "⭐ Top Rated Movies";
 
-    const data = await fetchData(
-        `/movie/top_rated?api_key=${API_KEY}`
-    );
+    try {
+        showLoader();
 
-    if (data && data.results) {
-        displayMovies(data.results);
+        const data = await fetchData(
+            `/movie/top_rated?api_key=${API_KEY}`
+        );
+
+        hideLoader();
+
+        if (data && data.results) {
+            displayMovies(data.results);
+        }
+
+    } catch (error) {
+        console.error("Error loading top rated movies:", error);
     }
-
 }
 
 // ============================================
@@ -81,14 +134,22 @@ export async function loadUpcomingMovies() {
 
     sectionTitle.textContent = "📅 Upcoming Movies";
 
-    const data = await fetchData(
-        `/movie/upcoming?api_key=${API_KEY}`
-    );
+    try {
+        showLoader();
 
-    if (data && data.results) {
-        displayMovies(data.results);
+        const data = await fetchData(
+            `/movie/upcoming?api_key=${API_KEY}`
+        );
+
+        hideLoader();
+
+        if (data && data.results) {
+            displayMovies(data.results);
+        }
+
+    } catch (error) {
+        console.error("Error loading upcoming movies:", error);
     }
-
 }
 
 // ============================================
@@ -107,7 +168,6 @@ export function displayMovies(movies) {
     movies.forEach(movie => {
         createMovieCard(movie);
     });
-
 }
 
 // ============================================
@@ -138,7 +198,6 @@ function createMovieCard(movie) {
     const heartIcon = isFavorite(movie.id) ? "❤️" : "🤍";
 
     card.innerHTML = `
-    
         <div class="movie-poster-wrapper">
             <img src="${poster}" alt="${movie.title}">
             
@@ -162,21 +221,20 @@ function createMovieCard(movie) {
             </button>
 
         </div>
-
     `;
 
-    // =========================
+    // ============================================
     // View Details
-    // =========================
+    // ============================================
 
     card.querySelector(".details-btn")
         .addEventListener("click", () => {
             showMovieDetails(movie.id);
         });
 
-    // =========================
+    // ============================================
     // Favorite Button
-    // =========================
+    // ============================================
 
     const favBtn = card.querySelector(".fav-btn");
 
@@ -197,11 +255,9 @@ function createMovieCard(movie) {
             addToFavorites(movieData);
             favBtn.textContent = "❤️";
         }
-
     });
 
     movieContainer.appendChild(card);
-
 }
 
 // ============================================
@@ -242,7 +298,6 @@ export function setupCategories() {
             loadUpcomingMovies();
         });
     }
-
 }
 
 // ============================================
@@ -256,13 +311,21 @@ function activateButton(activeBtn) {
     });
 
     activeBtn.classList.add("active");
-
 }
+
+// ============================================
+// Load Favorites Movies
+// ============================================
+
 export function loadFavoritesMovies() {
 
     sectionTitle.textContent = "❤️ Your Favorites";
 
+    showLoader();
+
     const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+    hideLoader();
 
     if (favorites.length === 0) {
         movieContainer.innerHTML = "<h2>No Favorites Added ❤️</h2>";
