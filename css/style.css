@@ -1499,3 +1499,76 @@ body.dark .autocomplete-list{
 body.dark .autocomplete-item:hover{
     background:#333;
 }
+/* ==========================================
+   AUTOCOMPLETE WITH POSTERS
+========================================== */
+
+.autocomplete-item{
+
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    padding:10px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.autocomplete-item img{
+
+    width:55px;
+
+    height:80px;
+
+    object-fit:cover;
+
+    border-radius:8px;
+
+}
+
+.autocomplete-info{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.autocomplete-info h4{
+
+    margin:0;
+
+    font-size:15px;
+
+}
+
+.autocomplete-info p{
+
+    margin-top:6px;
+
+    font-size:13px;
+
+    color:gray;
+
+}
+
+.autocomplete-item:hover{
+
+    background:#ececec;
+
+}
+
+body.dark .autocomplete-item:hover{
+
+    background:#333;
+
+}
+
+body.dark .autocomplete-info p{
+
+    color:#ccc;
+
+}

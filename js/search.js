@@ -157,7 +157,25 @@ async function showSuggestions(query){
 
         item.className="autocomplete-item";
 
-        item.textContent=movie.title;
+        const poster = movie.poster_path
+            ? `https://image.tmdb.org/t/p/w92${movie.poster_path}`
+            : "../images/no-poster.png";
+
+        const year = movie.release_date
+            ? movie.release_date.substring(0, 4)
+            : "N/A";
+
+        item.innerHTML = `
+            <img src="${poster}" alt="${movie.title}">
+
+            <div class="autocomplete-info">
+
+                <h4>${movie.title}</h4>
+
+                <p>⭐ ${(movie.vote_average || 0).toFixed(1)} | 📅 ${year}</p>
+
+            </div>
+        `;
 
         item.addEventListener("click",()=>{
 
