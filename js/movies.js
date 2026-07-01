@@ -24,6 +24,13 @@ const sectionTitle = document.getElementById("section-title");
 // ============================================
 
 let isLoading = false;
+// ===============================
+// Infinite Scroll Variables
+// ===============================
+
+let currentPage = 1;
+let totalPages = 1;
+let currentCategory = "trending";
 
 // ============================================
 // SKELETON UI
@@ -59,8 +66,14 @@ export async function loadTrendingMovies() {
         showLoader();
 
         const data = await fetchData(
-            `/trending/movie/day?api_key=${API_KEY}`
+           
+            `/trending/movie/day?api_key=${API_KEY}&page=${currentPage}`
         );
+
+        if (data) {
+            totalPages = data.total_pages;
+        }
+        
 
         hideLoader();
 
@@ -156,9 +169,12 @@ export async function loadUpcomingMovies() {
 // Display Movies
 // ============================================
 
-export function displayMovies(movies) {
+export function displayMovies(movies , append = false) {
+    if(!append){
+
 
     movieContainer.innerHTML = "";
+    }
 
     if (!movies || movies.length === 0) {
         movieContainer.innerHTML = "<h2>No Movies Found</h2>";
@@ -333,4 +349,23 @@ export function loadFavoritesMovies() {
     }
 
     displayMovies(favorites);
+}
+export async function loadNextPage() {
+
+    if (isLoading) return;
+
+    if (currentPage >= totalPages) return;
+
+    currentPage++;
+
+    const data = await fetchData(
+        `/trending/movie/day?api_key=${API_KEY}&page=${currentPage}`
+    );
+
+    if (data && data.results) {
+
+        displayMovies(data.results, true);
+
+    }
+
 }

@@ -1,7 +1,8 @@
 import {
     loadTrendingMovies,
     setupCategories,
-    loadFavoritesMovies
+    loadFavoritesMovies,
+    loadNextPage
 } from "./movies.js";
 
 import { setupSearch } from "./search.js";
@@ -27,6 +28,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         });
     }
+    window.addEventListener("scroll", () => {
+
+        if (
+
+            window.innerHeight + window.scrollY >=
+            document.body.offsetHeight - 400
+
+        ) {
+
+            loadNextPage();
+
+        }
+
+    });
 
     // ===============================
     // 🌙 DARK MODE STARTS HERE
