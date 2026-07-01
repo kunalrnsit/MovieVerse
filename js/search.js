@@ -4,6 +4,7 @@
 
 import { API_KEY, fetchData } from "./api.js";
 import { displayMovies } from "./movies.js";
+let debounceTimer;
 
 // ============================================
 // Setup Search
@@ -28,6 +29,26 @@ export function setupSearch() {
             event.preventDefault();
             searchMovies();
         }
+    });
+    searchInput.addEventListener("input", () => {
+
+        clearTimeout(debounceTimer);
+
+        debounceTimer = setTimeout(() => {
+
+            showSuggestions(searchInput.value);
+
+        },300);
+
+    });
+    document.addEventListener("click",(e)=>{
+
+        if(!e.target.closest(".search-container")){
+
+            document.getElementById("autocomplete-list").style.display="none";
+
+        }
+
     });
 }
 
@@ -105,4 +126,53 @@ async function searchMovies() {
         movieContainer.innerHTML = "<h2>Something went wrong ❌</h2>";
         sectionTitle.textContent = "Error";
     }
+}
+async function showSuggestions(query){
+
+    const list=document.getElementById("autocomplete-list");
+
+    if(query.length<2){
+
+        list.style.display="none";
+        return;
+
+    }
+
+    const data=await fetchData(
+        `/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`
+    );
+
+    if(!data || !data.results){
+
+        list.style.display="none";
+        return;
+
+    }
+
+    list.innerHTML="";
+
+    data.results.slice(0,5).forEach(movie=>{
+
+        const item=document.createElement("div");
+
+        item.className="autocomplete-item";
+
+        item.textContent=movie.title;
+
+        item.addEventListener("click",()=>{
+
+            document.getElementById("search-input").value=movie.title;
+
+            list.style.display="none";
+
+            searchMovies();
+
+        });
+
+        list.appendChild(item);
+
+    });
+
+    list.style.display="block";
+
 }

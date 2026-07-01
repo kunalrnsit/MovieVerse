@@ -1461,3 +1461,41 @@ body.dark button{
     color:white;
 
 }
+.autocomplete-list{
+    position:absolute;
+    top:55px;
+    left:0;
+    width:100%;
+    background:#fff;
+    border-radius:8px;
+    box-shadow:0 5px 15px rgba(0,0,0,.2);
+    z-index:1000;
+    display:none;
+    max-height:300px;
+    overflow-y:auto;
+}
+
+.search-container{
+    position:relative;
+}
+
+.autocomplete-item{
+    padding:12px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.autocomplete-item:hover{
+    background:#f2f2f2;
+}
+
+/* Dark Mode */
+
+body.dark .autocomplete-list{
+    background:#222;
+    color:white;
+}
+
+body.dark .autocomplete-item:hover{
+    background:#333;
+}
